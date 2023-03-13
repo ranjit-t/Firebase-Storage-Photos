@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import { storage } from "./Firebase";
 import { ref, listAll, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -7,9 +7,10 @@ function App() {
   const [uploadImage, setUploadImage] = useState();
   const [isUploading, setIsUploading] = useState(false);
   const [allImages, setAllImages] = useState([]);
+  const fileInputRef = useRef(null);
 
   const handleFileUpload = async () => {
-    const file = uploadImage;
+    const file = uploadImage[0];
     const imagesRef = ref(storage, `images/${file.name}`);
     setIsUploading(true);
     try {
@@ -18,7 +19,9 @@ function App() {
       console.log(e.message);
     }
     setIsUploading(false);
+    fileInputRef.current.value = "";
   };
+
   useEffect(() => {
     const storageRef = ref(storage, "images/");
     listAll(storageRef)
@@ -26,7 +29,6 @@ function App() {
         result.items.forEach((itemRef) => {
           getDownloadURL(itemRef)
             .then((url) => {
-              // console.log(url);
               setAllImages((prev) => [...prev, url]);
             })
             .catch((error) => {
@@ -37,8 +39,7 @@ function App() {
       .catch((error) => {
         console.log(error);
       });
-    setAllImages([...new Set(allImages)]);
-  }, [uploadImage]);
+  }, [isUploading]);
 
   return (
     <div className="App">
@@ -47,8 +48,9 @@ function App() {
         <h2>Upload My Photos</h2>
         <input
           type="file"
+          ref={fileInputRef}
           onChange={(e) => {
-            setUploadImage(e.target.files[0]);
+            setUploadImage(fileInputRef.current.files);
             console.log(uploadImage);
           }}
         />
@@ -59,7 +61,7 @@ function App() {
 
       <div className="photos-section">
         <h2>Photos</h2>
-        {allImages.map((img) => {
+        {[...new Set(allImages)].map((img) => {
           return <img key={Math.random()} src={img} alt="nice" />;
         })}
       </div>
