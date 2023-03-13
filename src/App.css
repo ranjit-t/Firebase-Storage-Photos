@@ -1,18 +1,85 @@
 .App {
   text-align: center;
+  margin: none;
+  padding: none;
+  margin-top: -20px;
+  background-color: #f7f1e5;
+}
+body,
+html {
+  margin: none;
+  padding: none;
 }
 
 .upload-section {
-  width: 600px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-left: auto;
   margin-right: auto;
+  color: #898021d2;
 }
-.photos-section > img {
-  width: 400px;
-  height: 400px;
+.upload-section > input {
+  text-align: center;
+  padding: 20px;
+  margin: 20px;
+  box-shadow: 1px 1px 4px grey;
+  background-color: white;
+}
+.photos-section {
+  color: #898021d2;
+}
+
+.photos-pagination > img {
+  width: 100px;
+  height: 100px;
   object-fit: cover;
+  border-radius: 20px;
+  margin: 5px;
+}
+.display-image > img {
+  width: auto;
+  height: 80vh;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.selected-image {
+  border: 2px solid grey;
+  box-shadow: 1px 1px 4px grey;
+}
+
+.heading {
+  background-color: #898021d2;
+  color: white;
+  padding: 20px 0;
+}
+button {
+  background-color: #898021d2;
+  color: white;
+  font-size: larger;
+  border: none;
+  padding: 5px;
+  box-shadow: 1px 1px 4px grey;
+}
+button:hover {
+  background-color: #e7b10a;
+}
+button:active {
+  background-color: #4c4b16;
+}
+
+@media (max-width: 1200px) {
+  .display-image > img {
+    max-width: 80%;
+    height: auto;
+  }
+  .photos-pagination > img {
+    width: 12%;
+    height: 60px;
+    object-position: top center;
+    /* aspect-ratio: 1/1; */
+  }
 }

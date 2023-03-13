@@ -7,6 +7,8 @@ function App() {
   const [uploadImage, setUploadImage] = useState();
   const [isUploading, setIsUploading] = useState(false);
   const [allImages, setAllImages] = useState([]);
+  const [displayImage, setDisplayImage] = useState("");
+
   const fileInputRef = useRef(null);
 
   const handleFileUpload = async () => {
@@ -39,11 +41,16 @@ function App() {
       .catch((error) => {
         console.log(error);
       });
+    // setDisplayImage(allImages[0]);
+    // console.log(allImages[0]);
   }, [isUploading]);
+  useEffect(() => {
+    setDisplayImage(allImages[0]);
+  }, [allImages]);
 
   return (
     <div className="App">
-      <h1>My Gallery</h1>
+      <h1 className="heading">My Gallery</h1>
       <div className="upload-section">
         <h2>Upload My Photos</h2>
         <input
@@ -61,9 +68,24 @@ function App() {
 
       <div className="photos-section">
         <h2>Photos</h2>
-        {[...new Set(allImages)].map((img) => {
-          return <img key={Math.random()} src={img} alt="nice" />;
-        })}
+        <div className="photos-pagination">
+          {[...new Set(allImages)].map((img) => {
+            return (
+              <img
+                key={Math.random()}
+                src={img}
+                alt="nice"
+                className={img === displayImage ? "selected-image" : ""}
+                onClick={() => {
+                  setDisplayImage(img);
+                }}
+              />
+            );
+          })}
+        </div>
+        <div className="display-image">
+          <img src={displayImage} alt="display" />
+        </div>
       </div>
     </div>
   );
